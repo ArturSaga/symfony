@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./:/app
+    ports:
+      - "8080:80"
+    depends_on:
+      - php-fpm
+  php-fpm:
+    build:
+      context: .
+      dockerfile: ./docker/php-fpm/PHP.Dockerfile
+    volumes:
+      - ./:/app
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:14-alpine
+    ports:
+      - "5432:5432"
+#    environment:
+#      POSTGRES_DB: app
+#      POSTGRES_PASSWORD: secret
+#      POSTGRES_USER: app
+    volumes:
+      - db-data:/var/lib/postgresql/data:rw
+      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+      # - ./docker/db/data:/var/lib/postgresql/data:rw
+###< doctrine/doctrine-bundle ###
+volumes:
+  db-data:
+
