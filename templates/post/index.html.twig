@@ -7,7 +7,20 @@
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
-
+    {% if user %}
+<form action="{{ path('app_logout') }}" method="get">
+    <input value={{ user.email }}>
+    <input type="submit" value="Выйти">
+</form>
+    {% endif %}
+    {% if user is null %}
+        <form action="{{ path('app_login') }}" method="post">
+            <input type="submit" value="Войти">
+        </form>
+        <form action="{{ path('app_register') }}" method="post">
+            <input type="submit" value="Зарегистрироваться">
+        </form>
+    {% endif %}
 <div class="example-wrapper">
     <h1>Hello {{ controller_name }}! ✅</h1>
 
@@ -15,6 +28,7 @@
     <ul>
         <li>Your controller at <code><a href="{{ '/Users/mac/PhpstormProjects/iron/src/Controller/PostController.php'|file_link(0) }}">src/Controller/PostController.php</a></code></li>
         <li>Your template at <code><a href="{{ '/Users/mac/PhpstormProjects/iron/templates/post/index.html.twig'|file_link(0) }}">templates/post/index.html.twig</a></code></li>
+        <li> Хотите попасть в особый раздел? Нажмите <a href="/show">сюда</a></li>
     </ul>
 </div>
 {% endblock %}
